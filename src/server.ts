@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 import 'express-async-errors';
 
 import routes from './routes';
@@ -10,6 +11,10 @@ import './database';
 // Definindo a utilização do express
 const app = express();
 
+// Habilitando alguns sites para acessar a aplicação via navegador web
+app.use(cors({
+  //origin: 'http://localhost:3333'
+}));
 // Permitindo a reazliação de requisições com dados formatados em json
 app.use(express.json());
 // Criando a rota para servir arquivos estáticos
