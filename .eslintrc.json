@@ -37,14 +37,14 @@
     "no-useless-constructor": "off",
     "no-unused-vars": "off",
     "camelcase": "off",
-    // "@typescript-eslint/naming-convention": [
-    //   "error",
-    //   {
-    //     "selector": "interface",
-    //     "prefix": ["I"],
-    //     "format": ["PascalCase"]
-    //   }
-    // ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "prefix": ["I"],
+        "format": ["PascalCase"]
+      }
+    ],
     "import/extensions": [
       "error",
       "ignorePackages",
