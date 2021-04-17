@@ -20,7 +20,7 @@ app.use(cors({
 // Permitindo a reazliação de requisições com dados formatados em json
 app.use(express.json());
 // Criando a rota para servir arquivos estáticos
-app.use('/files', express.static(uploadConfig.directory))
+app.use('/files', express.static(uploadConfig.uploadsFolder));
 // Definindo a utilização das rotas criadas (routes/index.ts)
 app.use(routes);
 

@@ -5,16 +5,23 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
 import UpdateUserAvatarService from './UpdateUserAvatarService';
 
+let fakeUsersRepository: FakeUsersRepository;
+let fakeStorageProvider: FakeStorageProvider;
+let updateUserAvatar: UpdateUserAvatarService;
+
 // Criando a categoria de testes
 describe('UpdateUserAvatar', () => {
+    // Chamando uma função antes da execução dos testes
+    beforeEach(() => {
+        // Instanciando o repositório fake
+        fakeUsersRepository = new FakeUsersRepository();
+        fakeStorageProvider = new FakeStorageProvider();
+        // Criando o serviço
+        updateUserAvatar = new UpdateUserAvatarService(fakeUsersRepository, fakeStorageProvider);
+    });
+
     // Testes para a atualização de avatar
     it("should be able to update a user's avatar", async () => {
-        // Instanciando o repositório fake
-        const fakeUsersRepository = new FakeUsersRepository();
-        const fakeStorageProvider = new FakeStorageProvider();
-        // Criando o serviço
-        const updateUserAvatar = new UpdateUserAvatarService(fakeUsersRepository, fakeStorageProvider);
-
         // Criando o novo usuário
         const user = await fakeUsersRepository.create({
             name: 'John Doe',
@@ -33,26 +40,14 @@ describe('UpdateUserAvatar', () => {
     });
 
     it("should not be able to update a non existing user avatar", async () => {
-        // Instanciando o repositório fake
-        const fakeUsersRepository = new FakeUsersRepository();
-        const fakeStorageProvider = new FakeStorageProvider();
-        // Criando o serviço
-        const updateUserAvatar = new UpdateUserAvatarService(fakeUsersRepository, fakeStorageProvider);
-
         // Verificando se a atualização será rejeitada
-        expect(updateUserAvatar.execute({
+        await expect(updateUserAvatar.execute({
             user_id: 'non-existing-user',
             avatarFilename: 'avatar.jpg',
         })).rejects.toBeInstanceOf(AppError);
     });
 
     it("should delete old avatar when updating to a new one", async () => {
-        // Instanciando o repositório fake
-        const fakeUsersRepository = new FakeUsersRepository();
-        const fakeStorageProvider = new FakeStorageProvider();
-        // Criando o serviço
-        const updateUserAvatar = new UpdateUserAvatarService(fakeUsersRepository, fakeStorageProvider);
-
         // "Espionando" o provider para ver se a função é chamada
         const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
 

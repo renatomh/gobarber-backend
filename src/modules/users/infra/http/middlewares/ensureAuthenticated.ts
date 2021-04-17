@@ -5,7 +5,7 @@ import AppError from '@shared/errors/AppError';
 
 import authConfig from '@config/auth';
 
-interface TokenPayload {
+interface ITokenPayload {
   iat: number;
   exp: number;
   sub: string;
@@ -33,7 +33,7 @@ export default function ensureAuthenticated(
 
     // Pegando o ID do usuário codificado no token e salvando na requisição
     // Aqui é necessário a alteração nos @types para o express, criando o objeto 'user' no Request
-    const { sub } = decoded as TokenPayload;
+    const { sub } = decoded as ITokenPayload;
     request.user = {
       id: sub,
     };
