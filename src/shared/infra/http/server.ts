@@ -1,10 +1,15 @@
+import 'reflect-metadata';
+import 'dotenv/config';
+
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import { errors } from 'celebrate';
 import 'express-async-errors';
 
 import routes from './routes';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
+import rateLimiter from './middlewares/rateLimiter';
 
 import '@shared/infra/typeorm';
 // Injeção de dependências
@@ -13,6 +18,8 @@ import '@shared/container';
 // Definindo a utilização do express
 const app = express();
 
+// Middleware para limitar o número de requisições por IP
+app.use(rateLimiter);
 // Habilitando alguns sites para acessar a aplicação via navegador web
 app.use(cors({
   //origin: 'http://localhost:3333'
@@ -23,6 +30,8 @@ app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 // Definindo a utilização das rotas criadas (routes/index.ts)
 app.use(routes);
+// Definindo a utilização dos erros de validação tratados pelo 'celebrate'
+app.use(errors());
 
 // Criando a tratativa global de erros (deve estar após a utilização das rotas)
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {

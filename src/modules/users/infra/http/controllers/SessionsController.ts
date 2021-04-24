@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
 
@@ -18,15 +19,8 @@ export default class SessionsController {
             password,
         });
 
-        // Com a atualização do TypeScript, isso se faz necessário
-        const userWithoutPassword = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            created_at: user.created_at,
-            updated_at: user.updated_at,
-        };
-
-        return response.json({ user: userWithoutPassword, token });
+        // Retornando o objeto já alterado pelo 'class-transformer' do modelo de usuário
+        // Removendo a senha e inserindo o avatar
+        return response.json({ user: classToClass(user), token });
     }
 }

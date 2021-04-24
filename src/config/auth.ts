@@ -1,6 +1,8 @@
 export default {
   jwt: {
-    secret: 'b6ef032e8b8354f7271fca1090413948',
+    // Acessando a variável ambiente do APP_SECRET
+    // Deixamos a possibilidade de ficar um padrão para a execução dos testes
+    secret: process.env.APP_SECRET || 'default',
     expiresIn: '1d',
   },
 };

@@ -5,6 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import uploadConfig from '@config/upload';
+
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity('users')
 class User {
@@ -18,6 +21,8 @@ class User {
   email: string;
 
   @Column()
+  // Evitando que o campo seja enviado para o front-end
+  @Exclude()
   password: string;
 
   @Column()
@@ -28,6 +33,23 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  // Incluindo o endereço para o avatar do usuário
+  @Expose({ name: 'avatar_url' })
+  getAvatarUrl(): string | null {
+    if (!this.avatar) {
+      return null
+    }
+    // Definindo a URL do arquivo de acrodo com o driver de armazenametno sendo utilizado
+    switch (uploadConfig.driver) {
+      case 'disk':
+        return `${process.env.APP_API_URL}/files/${this.avatar}`;
+      case 's3':
+        return `https://${uploadConfig.config.aws.bucket}.s3.us-east-2.amazonaws.com/${this.avatar}`;
+      default:
+        return null;
+    }
+  }
 }
 
 export default User;

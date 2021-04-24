@@ -1,9 +1,11 @@
 // Testes unitários para a funcionalidade de visualização de prestadores de serviço
 import AppError from '@shared/errors/AppError';
 
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import ListProvidersService from './ListProvidersService';
 
+let fakeCacheProvider: FakeCacheProvider;
 let fakeUsersRepository: FakeUsersRepository;
 let listProvidersService: ListProvidersService;
 
@@ -13,8 +15,12 @@ describe('ListProviders', () => {
     beforeEach(() => {
         // Instanciando o repositório fake
         fakeUsersRepository = new FakeUsersRepository();
+        fakeCacheProvider = new FakeCacheProvider();
         // Criando o serviço
-        listProvidersService = new ListProvidersService(fakeUsersRepository);
+        listProvidersService = new ListProvidersService(
+            fakeUsersRepository,
+            fakeCacheProvider
+        );
     });
 
     // Testes para a visualização de prestadores de serviço

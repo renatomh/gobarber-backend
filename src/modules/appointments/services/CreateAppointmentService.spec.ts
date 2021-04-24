@@ -1,9 +1,13 @@
 // Testes unitários para a funcionalidade de criação de agendamentos
 import AppError from '@shared/errors/AppError';
 
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import CreateAppointmentService from './CreateAppointmentService';
 
+let fakeCacheProvider: FakeCacheProvider;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let createAppointment: CreateAppointmentService;
 
@@ -13,8 +17,14 @@ describe('CreateAppointment', () => {
     beforeEach(() => {
         // Instanciando o repositório fake
         fakeAppointmentsRepository = new FakeAppointmentsRepository();
+        fakeNotificationsRepository = new FakeNotificationsRepository();
+        fakeCacheProvider = new FakeCacheProvider();
         // Criando o serviço
-        createAppointment = new CreateAppointmentService(fakeAppointmentsRepository);
+        createAppointment = new CreateAppointmentService(
+            fakeAppointmentsRepository,
+            fakeNotificationsRepository,
+            fakeCacheProvider
+        );
     });
 
     // Teste para a criação de novos agendamentos (o 'it' é a mesma coisa do 'test')

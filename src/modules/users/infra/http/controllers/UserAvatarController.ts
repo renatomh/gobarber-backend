@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 
@@ -15,16 +16,8 @@ export default class UserAvatarController {
             avatarFilename: request.file.filename,
         });
 
-        // Removendo a senha do usuário para retornar a requisição
-        const userWithoutPassword = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            avatar: user.avatar,
-            created_at: user.created_at,
-            updated_at: user.updated_at,
-        };
-
-        return response.json(userWithoutPassword);
+        // Retornando o objeto já alterado pelo 'class-transformer' do modelo de usuário
+        // Removendo a senha e inserindo o avatar
+        return response.json(classToClass(user));
     }
 }

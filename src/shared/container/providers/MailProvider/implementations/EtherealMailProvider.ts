@@ -8,7 +8,7 @@ import IMailTemplateProvider from '../../MailTemplateProvider/models/IMailTempla
 
 // Tornando a classe passível de injeção de dependência para o provider do template de e-mail
 @injectable()
-export default class EthereakMailProvider implements IMailProvider {
+export default class EtherealMailProvider implements IMailProvider {
     private client: Transporter;
 
     // Definindo as configurações para o provider
@@ -35,7 +35,12 @@ export default class EthereakMailProvider implements IMailProvider {
     }
 
     // Função para envio de e-mails
-    public async sendMail({ to, from, subject, templateData }: ISendMailDTO): Promise<void> {
+    public async sendMail({
+        to,
+        from,
+        subject,
+        templateData
+    }: ISendMailDTO): Promise<void> {
         const message = await this.client.sendMail({
             // Remetente
             from: {

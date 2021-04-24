@@ -1,10 +1,12 @@
-import { startOfHour, isBefore, getHours } from 'date-fns';
+import { startOfHour, isBefore, getHours, format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 
 interface IRequest {
   date: Date;
@@ -19,7 +21,11 @@ class CreateAppointmentService {
   constructor(
     // Fazendo a injeção de dependências (desnecessário em sistemas pequenos)
     @inject('AppointmentsRepository')
-    private appointmentsRepository: IAppointmentsRepository
+    private appointmentsRepository: IAppointmentsRepository,
+    @inject('NotificationsRepository')
+    private notificationsRepository: INotificationsRepository,
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) { }
 
   public async execute({ date, provider_id, user_id }: IRequest): Promise<Appointment> {
@@ -55,6 +61,24 @@ class CreateAppointmentService {
       user_id,
       date: appointmentDate,
     });
+
+    // Pegando a data formatada (https://date-fns.org/v2.21.1/docs/format)
+    // Precisamos escapar textos na formatação com aspas imples ''
+    const dateFormatted = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm'h'");
+    // Criando a nova notificação a ser enviada aos usuários
+
+    await this.notificationsRepository.create({
+      recipient_id: provider_id,
+      content: `Novo agendamento para ${dateFormatted}`,
+    })
+
+    // Definindo a chave para o cache para os agendamentos de um provider específico em uma data específica
+    const cacheKey = `provider-appointments:${provider_id}:${format(
+      appointmentDate,
+      "yyyy-M-d"
+    )}`;
+    // Invalidando o cache de agendamentos
+    await this.cacheProvider.invalidate(cacheKey);
 
     // Retornando o agendamento criado
     return appointment;

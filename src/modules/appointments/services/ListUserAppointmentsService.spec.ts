@@ -1,10 +1,14 @@
 // Testes unitários para a funcionalidade de visualização de agendamentos de um usuário
 import AppError from '@shared/errors/AppError';
 
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeAppointmentsRepository from '@modules/appointments/repositories/fakes/FakeAppointmentsRepository';
 import ListUserAppointmentsService from './ListUserAppointmentsService';
 import CreateAppointmentService from './CreateAppointmentService';
 
+let fakeCacheProvider: FakeCacheProvider;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let listUserAppointmentsService: ListUserAppointmentsService;
 let createAppointment: CreateAppointmentService;
@@ -15,9 +19,15 @@ describe('ListUserAppointments', () => {
     beforeEach(() => {
         // Instanciando o repositório fake
         fakeAppointmentsRepository = new FakeAppointmentsRepository();
+        fakeNotificationsRepository = new FakeNotificationsRepository();
+        fakeCacheProvider = new FakeCacheProvider();
         // Criando o serviço
         listUserAppointmentsService = new ListUserAppointmentsService(fakeAppointmentsRepository);
-        createAppointment = new CreateAppointmentService(fakeAppointmentsRepository);
+        createAppointment = new CreateAppointmentService(
+            fakeAppointmentsRepository,
+            fakeNotificationsRepository,
+            fakeCacheProvider
+        );
     });
 
     // Testes para a visualização de agendamentos

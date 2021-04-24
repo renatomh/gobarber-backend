@@ -25,12 +25,12 @@ describe('ListProviderDayAvailability', () => {
         // Ao criar uma nova data, o índice para o mês se inicia no 0, assim temos:
         // janeiro (0), fevereiro (1), março (2), etc.
         await fakeAppointmentsRepository.create({
-            provider_id: 'user',
+            provider_id: 'provider',
             user_id: 'user',
             date: new Date(2021, 4, 20, 14, 0, 0),
         });
         await fakeAppointmentsRepository.create({
-            provider_id: 'user',
+            provider_id: 'provider',
             user_id: 'user',
             date: new Date(2021, 4, 20, 15, 0, 0),
         });
@@ -43,7 +43,7 @@ describe('ListProviderDayAvailability', () => {
 
         // Obtendo as disponibilidades para o período
         const availability = await listProviderDayAvailabilityService.execute({
-            provider_id: 'user',
+            provider_id: 'provider',
             day: 20,
             year: 2021,
             month: 5,

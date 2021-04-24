@@ -9,7 +9,7 @@ class DiskStorageProvider implements IStorageProvider {
         await fs.promises.rename(
             // Movendo o arquivo do diretório temporário para a nova localidade
             path.resolve(uploadConfig.tmpFolder, file),
-            path.resolve(uploadConfig.uploadsFolder, 'uploads', file),
+            path.resolve(uploadConfig.uploadsFolder, file),
         );
 
         // Retornando o nome do arquivo
