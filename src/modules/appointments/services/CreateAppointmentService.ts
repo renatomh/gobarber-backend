@@ -50,6 +50,7 @@ class CreateAppointmentService {
     // Verificando se já há algum agendamento no horário selecionado. Caso haja, informamos o erro
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
+      provider_id,
     );
     if (findAppointmentInSameDate) {
       throw new AppError('This appointment is already booked.');

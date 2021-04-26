@@ -14,10 +14,12 @@ class AppointmentsRepository
     // Criando a lista de appointments
     private appointments: Appointment[] = [];
 
-    public async findByDate(date: Date): Promise<Appointment | undefined> {
-        const findAppointment = this.appointments.find(
+    public async findByDate(date: Date, provider_id: string): Promise<Appointment | undefined> {
+        const findAppointment = this.appointments.find(appointment =>
             // Verificando se as datas são iguais
-            appointment => isEqual(appointment.date, date),
+            isEqual(appointment.date, date) &&
+            // E se os IDs dos prestadores de serviço coincidem
+            appointment.provider_id == provider_id,
         )
 
         return findAppointment;
