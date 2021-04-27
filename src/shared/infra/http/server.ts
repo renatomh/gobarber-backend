@@ -18,8 +18,6 @@ import '@shared/container';
 // Definindo a utilização do express
 const app = express();
 
-// Middleware para limitar o número de requisições por IP
-app.use(rateLimiter);
 // Habilitando alguns sites para acessar a aplicação via navegador web
 app.use(cors({
   //origin: 'http://localhost:3333'
@@ -28,6 +26,9 @@ app.use(cors({
 app.use(express.json());
 // Criando a rota para servir arquivos estáticos
 app.use('/files', express.static(uploadConfig.uploadsFolder));
+// Middleware para limitar o número de requisições por IP
+// Foi colocado após o 'app.use('/files', ...)' para não restringir o acesso aos arquivos
+app.use(rateLimiter);
 // Definindo a utilização das rotas criadas (routes/index.ts)
 app.use(routes);
 // Definindo a utilização dos erros de validação tratados pelo 'celebrate'
