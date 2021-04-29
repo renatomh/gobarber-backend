@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { parseISO } from 'date-fns';
 // Necessária a importação desse "reflect-metadata" por algum motivo que eu não faço ideia de qual possa ser
 import "reflect-metadata";
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import ListProvidersService from '@modules/appointments/services/ListProvidersService';
 
@@ -18,6 +18,7 @@ export default class ProvidersController {
             user_id,
         });
 
-        return response.json(providers);
+        // Retornando os dados serializados para evitar enviar informações como a senha do prestador
+        return response.json(classToClass(providers));
     }
 }

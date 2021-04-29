@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -35,7 +36,11 @@ class ListProvidersService {
             });
             //console.log('A query no banco foi feita!');
             // Salvando os dados pesquisados em cache
-            await this.cacheProvider.save(`providers-list:${user_id}`, users);
+            await this.cacheProvider.save(
+                `providers-list:${user_id}`,
+                // Serializando os prestadores de serviço para não salvar com a senha dos usuários
+                classToClass(users),
+            );
         }
 
         // Retornando os usuários
