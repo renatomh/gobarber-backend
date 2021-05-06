@@ -1,16 +1,12 @@
+<h1 align="center"><img alt="GoBarber" title="GoBarber" src=".github/logo.png" width="250" /></h1>
+
 # GoBarber - *Backend*
 
 ## 💡 Ideia do projeto
 
-<br/>
-
 Projeto desenvolvido durante o bootcamp *GoStack* da Rocketseat, com os módulos de *backend*.
 
-<br/>
-
 ## 🔍 Funcionalidades
-
-<br/>
 
 ## Recuperação de senha
 
@@ -89,11 +85,7 @@ Projeto desenvolvido durante o bootcamp *GoStack* da Rocketseat, com os módulos
 - 
 - 
 
-<br/>
-
 ## 🛠 Tecnologias Utilizadas
-
-<br/>
 
 Para o desenvolvimento desse projeto, as seguintes tecnologias foram utilizadas:
 
@@ -102,11 +94,7 @@ Para o desenvolvimento desse projeto, as seguintes tecnologias foram utilizadas:
 - [TypeScript](https://www.typescriptlang.org/)
 - [Docker](https://www.docker.com/)
 
-<br/>
-
 ## 💻 Configuração do Projeto
-
-<br/>
 
 ### Primeiramente, clone o repositório para obter uma cópia do código em sua máquina local
 
@@ -124,8 +112,6 @@ $ yarn
 
 ### **PostreSQL**
 
-<br/>
-
 Necessário ter um servidor PostgreSQL rodando. Pode ser utilizado o docker para 
 
 ```bash
@@ -134,25 +120,17 @@ $ docker ...
 
 ### **MongoDB**
 
-<br/>
-
 ```bash
 $ docker ...
 ```
 
 ### **Redis**
 
-<br/>
-
 ```bash
 $ docker ...
 ```
 
-<br/>
-
 ## 🌐 Atualização dos arquivos de configuração
-
-<br/>
 
 É necessário também criar o arquivo *.env* na raiz do projeto, baseando-se no arquivo *.env.example* e atualizar os campos com as informações necessárias.
 
@@ -183,7 +161,7 @@ REDIS_PORT=6379
 REDIS_PASS=
 ```
 
-Bem como o arquivo de configuração para o orm *ormconfig.json*, também na raiz do projeto, baseando-se no arquivo *ormconfig.example.json*, atualizando os campos com as informações apropriadas:
+Bem como o arquivo de configuração para o orm *ormconfig.json*, também na raiz do projeto, baseando-se no arquivo *ormconfig.example.src.json* (ou *ormconfig.example.dist.json*, caso se esteja utilizando o código já transpilado para o ambiente de produção no diretório *dist*), atualizando os campos com as informações apropriadas:
 
 ```json
 [
@@ -228,18 +206,24 @@ Para a execução do projeto em ambiente de desenvolvimento, basta executar o co
 $ yarn dev:server
 ```
 
-<br />
+Para o ambiente de produção (após o *build* do projeto), o comando a ser executado é o seguinte:
+
+```bash
+$ yarn server
+```
 
 ## 🔨 *Build* do projeto para *Deploy*
 
-Para a execução do projeto em ambiente de produção, deve-se realizar o *build* do projeto, como visto com o comando abaixo:
+Para a execução do projeto em ambiente de produção, deve-se realizar o *build* do projeto, dado que o sistema foi desenvolvido com *TypeScript* e o *Node* consegue interpretar somente *JavaScript*.
+
+O *build* poderia ser feito com o *tsc*, porém é mais lento e precisa de alguns módulos externos. Assim, fazemos uso do [Babel](https://babeljs.io/) para a transpilação do código em *TypeScript* para *JavaScript*.
+
+O comando abaixo é utilizado para a conversão do código em desenvolvimento para produção (conforme *script* do *package.json*):
 
 ```bash
-$ 
+$ yarn build
 ```
-
-<br />
 
 ## 📄 Licença
 
-Esse projeto está sob a licença ...
+Esse projeto está sob a licença **MIT**. Para mais informações, accesse [LICENSE](./LICENSE).

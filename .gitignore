@@ -1,3 +1,4 @@
+# Removendo os arquivos de configuração e os módulos do Node
 .idea/
 .vscode/
 node_modules/
@@ -8,8 +9,13 @@ temp/
 .env
 # Removendo o arquivo de configuração do ORM
 ormconfig.json
+
 # Removendo os arquivos de relatórios
 coverage
 
+# Removendo o diretório com os arquivos carregados no servidor
 tmp/*
 !tmp/.gitkeep
+
+# Removendo o diretório com os arquivos convertidos para o ambiente de produção
+dist
