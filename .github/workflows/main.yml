@@ -46,5 +46,38 @@ jobs:
           target: "~/app/gobarber-backend"
       
       # Executar "yarn" no servidor
+      - name: Instal dependencies on VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          # Definindo os comandos a serem executados
+          script: |
+            cd ~/app/gobarber-backend
+            yarn
+          
       # Executar as migrations do TypeORM
+      - name: Run migrations on VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          # Definindo os comandos a serem executados
+          script: |
+            cd ~/app/gobarber-backend
+            ./node_modules/.bin/typeorm migration:run
+            
       # Restart no servidor Node.js
+      - name: Restart Node server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          # Definindo os comandos a serem executados
+          script: pm2 restart gobarber-api
