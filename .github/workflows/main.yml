@@ -32,7 +32,7 @@ jobs:
       - name: Run Build
         run: yarn build
       
-      # Copiar a pasta 'dist' para uma pasta temporária no servidor/VPS utilizado para a aplicação
+      # Copiar o repositório para o diretório no servidor/VPS utilizado para a aplicação
       - name: Copy dist to VPS
         uses: appleboy/scp-action@master
         with:
@@ -40,11 +40,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: "."
+          # Selecionando todas as pastas com exceção do "node_modules"
+          source: ".,!node_modules"
           # O caminho é baseado no diretório onde o usuário logado no servidor inicia
           target: "~/app/gobarber-backend"
       
-      # Substituir o código existente na pasta "dist" pelo novo código
       # Executar "yarn" no servidor
       # Executar as migrations do TypeORM
       # Restart no servidor Node.js
