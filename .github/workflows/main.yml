@@ -40,9 +40,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: "dist"
+          source: "."
           # O caminho é baseado no diretório onde o usuário logado no servidor inicia
-          target: "test"
+          target: "~/app/gobarber-backend"
       
       # Substituir o código existente na pasta "dist" pelo novo código
       # Executar "yarn" no servidor
