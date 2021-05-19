@@ -1,0 +1,50 @@
+name: CI
+
+# Definindo quando as ações devem ser executadas
+on:
+  # Gatilho para o workflow quando uma requisição "push" é feita no branch principal
+  push:
+    branches: [ main ]
+
+# Criando o workflow
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # O tipo de runner onde o job será executado
+    runs-on: ubuntu-latest
+
+    # Passos a serem exeutados na tarefa
+    steps:
+      # Fazendo o check-out do repositório com o $GITHUB_WORKSPACE, para a tarefa poder acessá-lo
+      - uses: actions/checkout@v2
+      
+      # Configurando o ambiente do Node.js com a versão apropriada
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 14.x
+      
+      # Instalando as dependências com o NPM/Yarn
+      - name: Install dependencies
+        run: yarn
+      
+      # Executando a build
+      - name: Run Build
+        run: yarn build
+      
+      # Copiar a pasta 'dist' para uma pasta temporária no servidor/VPS utilizado para a aplicação
+      - name: Copy dist to VPS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "dist"
+          # O caminho é baseado no diretório onde o usuário logado no servidor inicia
+          target: "test"
+      
+      # Substituir o código existente na pasta "dist" pelo novo código
+      # Executar "yarn" no servidor
+      # Executar as migrations do TypeORM
+      # Restart no servidor Node.js
