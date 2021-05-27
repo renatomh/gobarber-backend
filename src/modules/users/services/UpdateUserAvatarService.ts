@@ -12,12 +12,12 @@ interface IRequest {
   avatarFilename: string;
 }
 
-// Tornando a classe passível de injeção de dependências (desnecessário em sistemas pequenos)
+/* Tornando a classe passível de injeção de dependências (desnecessário em sistemas pequenos) */
 @injectable()
 class UpdateUserAvatarService {
-  // Definindo o parâmetro e já criando a variável (disponível no TypeScript somente)
+  /* Definindo o parâmetro e já criando a variável (disponível no TypeScript somente) */
   constructor(
-    // Fazendo a injeção de dependências (desnecessário em sistemas pequenos)
+    /* Fazendo a injeção de dependências (desnecessário em sistemas pequenos) */
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
@@ -26,25 +26,25 @@ class UpdateUserAvatarService {
   ) { }
 
   public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
-    // Pegando o repositório para os usuários e buscando o usuário
+    /* Pegando o repositório para os usuários e buscando o usuário */
     const user = await this.usersRepository.findById(user_id);
 
-    // Caso nenhum usuário seja encontrando, informamos o erro
+    /* Caso nenhum usuário seja encontrando, informamos o erro */
     if (!user) {
       throw new AppError('Only authenticated users can change avatar.', 401);
     }
 
-    // Caso o usuário já possua um avatar, removemos o arquivo antigo
+    /* Caso o usuário já possua um avatar, removemos o arquivo antigo */
     if (user.avatar) {
       await this.storageProvider.deleteFile(user.avatar);
     }
 
-    // Atualizando a coluna do avatar no banco de dados e salvando a informação
+    /* Atualizando a coluna do avatar no banco de dados e salvando a informação */
     const filename = await this.storageProvider.saveFile(avatarFilename);
     user.avatar = filename;
     await this.usersRepository.save(user);
 
-    // Retornando os dados criados
+    /* Retornando os dados criados */
     return user;
   }
 }

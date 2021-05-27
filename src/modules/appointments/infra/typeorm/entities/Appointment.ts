@@ -25,8 +25,8 @@ class Appointment {
   @Column()
   user_id: string;
 
-  // Caso queiramos retornar os dados do usuário junto com os dados do apontamento
-  //@ManyToOne(() => User, { eager: true })
+  /* Caso queiramos retornar os dados do usuário junto com os dados do apontamento */
+  /*@ManyToOne(() => User, { eager: true })*/
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;

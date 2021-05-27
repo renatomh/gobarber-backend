@@ -15,7 +15,7 @@ const upload = multer(uploadConfig.multer);
 
 usersRouter.post(
   '/',
-  // Validando os dados passados na requisição
+  /* Validando os dados passados na requisição */
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
@@ -26,7 +26,7 @@ usersRouter.post(
   usersController.create
 );
 
-// Temos de definir o nome do campo que conetrár o arquivo a ser caregado na requisição
+/* Temos de definir o nome do campo que conetrár o arquivo a ser caregado na requisição */
 usersRouter.patch(
   '/avatar',
   ensureAuthenticated,

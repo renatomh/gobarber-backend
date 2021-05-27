@@ -15,24 +15,24 @@ providersRouter.use(ensureAuthenticated);
 
 providersRouter.get('/', providersController.index);
 providersRouter.get(
-    '/:provider_id/month-availability',
-    // Validando os dados passados na requisição
-    celebrate({
-        [Segments.PARAMS]: {
-            provider_id: Joi.string().uuid().required(),
-        },
-    }),
-    providerMonthAvailabilityController.index
+  '/:provider_id/month-availability',
+  /* Validando os dados passados na requisição */
+  celebrate({
+    [Segments.PARAMS]: {
+      provider_id: Joi.string().uuid().required(),
+    },
+  }),
+  providerMonthAvailabilityController.index
 );
 providersRouter.get(
-    '/:provider_id/day-availability',
-    // Validando os dados passados na requisição
-    celebrate({
-        [Segments.PARAMS]: {
-            provider_id: Joi.string().uuid().required(),
-        },
-    }),
-    providerDayAvailabilityController.index
+  '/:provider_id/day-availability',
+  /* Validando os dados passados na requisição */
+  celebrate({
+    [Segments.PARAMS]: {
+      provider_id: Joi.string().uuid().required(),
+    },
+  }),
+  providerDayAvailabilityController.index
 );
 
 export default providersRouter;

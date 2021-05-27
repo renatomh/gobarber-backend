@@ -8,13 +8,13 @@ import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInD
 import Appointment from '../entities/Appointment';
 
 class AppointmentsRepository
-  // Definindo que a classe deve implementar a interface criada (escopo de regras)
+  /* Definindo que a classe deve implementar a interface criada (escopo de regras) */
   implements IAppointmentsRepository {
-  // Definindo o repositório ORM do tipo 'Appointment'
+  /* Definindo o repositório ORM do tipo 'Appointment' */
   private ormRepository: Repository<Appointment>
 
   constructor() {
-    // Criando o repositório
+    /* Criando o repositório */
     this.ormRepository = getRepository(Appointment);
   }
 
@@ -41,14 +41,14 @@ class AppointmentsRepository
     month,
     year
   }: IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
-    // Formatando o mês para a consulta
+    /* Formatando o mês para a consulta */
     const parsedMonth = String(month).padStart(2, '0');
 
     const appointments = await this.ormRepository.find({
       where: {
         provider_id,
-        // Definindo uma 'query SQL nativa'
-        // Formatações no PostgreSQL: https://www.postgresql.org/docs/10/functions-formatting.html
+        /* Definindo uma 'query SQL nativa' */
+        /* Formatações no PostgreSQL: https://www.postgresql.org/docs/10/functions-formatting.html */
         date: Raw(datefieldName =>
           `to_char(${datefieldName}, 'MM-YYYY') = '${parsedMonth}-${year}'`
         ),
@@ -64,27 +64,27 @@ class AppointmentsRepository
     month,
     year
   }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
-    // Formatando o dia e mês para a consulta
+    /* Formatando o dia e mês para a consulta */
     const parsedDay = String(day).padStart(2, '0');
     const parsedMonth = String(month).padStart(2, '0');
 
     const appointments = await this.ormRepository.find({
       where: {
         provider_id,
-        // Definindo uma 'query SQL nativa'
-        // Formatações no PostgreSQL: https://www.postgresql.org/docs/10/functions-formatting.html
+        /* Definindo uma 'query SQL nativa' */
+        /* Formatações no PostgreSQL: https://www.postgresql.org/docs/10/functions-formatting.html */
         date: Raw(datefieldName =>
           `to_char(${datefieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`
         ),
       },
-      // Retornando ainda os dados do usuário
+      /* Retornando ainda os dados do usuário */
       relations: ['user'],
     });
 
     return appointments;
   }
 
-  // Método estendido para criar um dado e já salvar a informação
+  /* Método estendido para criar um dado e já salvar a informação */
   public async create({ provider_id, user_id, date }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = this.ormRepository.create({
       provider_id,
@@ -96,6 +96,6 @@ class AppointmentsRepository
   }
 }
 
-// const response = await findByDate(date);
+/* const response = await findByDate(date); */
 
 export default AppointmentsRepository;

@@ -16,6 +16,7 @@ coverage
 # Removendo o diretório com os arquivos carregados no servidor
 tmp/*
 !tmp/.gitkeep
+!tmp/uploads/avatar-placeholder.jpg
 
 # Removendo o diretório com os arquivos convertidos para o ambiente de produção
 dist

@@ -21,7 +21,7 @@ class User {
   email: string;
 
   @Column()
-  // Evitando que o campo seja enviado para o front-end
+  /* Evitando que o campo seja enviado para o front-end */
   @Exclude()
   password: string;
 
@@ -34,13 +34,21 @@ class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  // Incluindo o endereço para o avatar do usuário
+  /* Incluindo o endereço para o avatar do usuário */
   @Expose({ name: 'avatar_url' })
   getAvatarUrl(): string | null {
     if (!this.avatar) {
-      return null
+      /* É importante ter o arquivo padrão carregado */
+      switch (uploadConfig.driver) {
+        case 'disk':
+          return `${process.env.APP_API_URL}/files/avatar-placeholder.jpg`;
+        case 's3':
+          return `https://${uploadConfig.config.aws.bucket}.s3.us-east-2.amazonaws.com/avatar-placeholder.jpg`;
+        default:
+          return null;
+      }
     }
-    // Definindo a URL do arquivo de acrodo com o driver de armazenametno sendo utilizado
+    /* Definindo a URL do arquivo de acordo com o driver de armazenamento sendo utilizado */
     switch (uploadConfig.driver) {
       case 'disk':
         return `${process.env.APP_API_URL}/files/${this.avatar}`;

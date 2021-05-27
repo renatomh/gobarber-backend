@@ -80,10 +80,7 @@ Projeto desenvolvido durante o bootcamp *GoStack* da Rocketseat, com os módulos
 
 ## 💹 Extras
 
-- 
-- 
-- 
-- 
+- Caso um usuário não possua um avatar cadastrado, será disponibilizado um padrão;
 
 ## 🛠 Tecnologias Utilizadas
 
@@ -112,7 +109,7 @@ $ yarn
 
 ### **PostreSQL**
 
-Necessário ter um servidor PostgreSQL rodando. Pode ser utilizado o docker para 
+Necessário ter um servidor PostgreSQL rodando. Pode ser utilizado o docker para
 
 ```bash
 $ docker ...

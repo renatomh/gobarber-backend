@@ -13,16 +13,16 @@ interface IRequest {
   password: string;
 }
 
-// Tornando a classe passível de injeção de dependências (desnecessário em sistemas pequenos)
+/* Tornando a classe passível de injeção de dependências (desnecessário em sistemas pequenos) */
 @injectable()
 class CreateUserService {
-  // Definindo o parâmetro e já criando a variável (disponível no TypeScript somente)
+  /* Definindo o parâmetro e já criando a variável (disponível no TypeScript somente) */
   constructor(
-    // Fazendo a injeção de dependências (desnecessário em sistemas pequenos)
+    /* Fazendo a injeção de dependências (desnecessário em sistemas pequenos) */
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
-    // Fazendo a injeção da implementação do BCrypt para a interface do Hash Provider
+    /* Fazendo a injeção da implementação do BCrypt para a interface do Hash Provider */
     @inject('HashProvider')
     private hashProvider: IHashProvider,
 
@@ -31,15 +31,15 @@ class CreateUserService {
   ) { }
 
   public async execute({ name, email, password }: IRequest): Promise<User> {
-    // Obtendo o repositório para o usuário e verificando se o e-mail já foi cadastrado
+    /* Obtendo o repositório para o usuário e verificando se o e-mail já foi cadastrado */
     const checkUserExists = await this.usersRepository.findByEmail(email);
 
-    // Caso o usuário já exista, informamos o erro
+    /* Caso o usuário já exista, informamos o erro */
     if (checkUserExists) {
       throw new AppError('Email address already used.');
     }
 
-    // Caso contrário, criptografamos a senha, criamos o usuário e salvamos no banco de dados
+    /* Caso contrário, criptografamos a senha, criamos o usuário e salvamos no banco de dados */
     const hashedPassword = await this.hashProvider.generateHash(password);
     const user = await this.usersRepository.create({
       name,
@@ -47,7 +47,7 @@ class CreateUserService {
       password: hashedPassword,
     });
 
-    // Precisamos ainda invalidar o cache para as listas de usuários
+    /* Precisamos ainda invalidar o cache para as listas de usuários */
     await this.cacheProvider.invalidatePrefix('providers-list');
 
     return user;

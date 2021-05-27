@@ -9,7 +9,7 @@ import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 
 const routes = Router();
 
-// Aqui importamos todas as rotas e disponibilizamos para o servidor
+/* Aqui importamos todas as rotas e disponibilizamos para o servidor */
 routes.use('/appointments', appointmentsRouter);
 routes.use('/providers', providersRouter);
 routes.use('/users', usersRouter);
